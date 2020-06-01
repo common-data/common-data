@@ -10,12 +10,13 @@ from datetime import date
 import numpy as np
 import os
 import csv
+import inspect
 
 # Setting the variables
 api_get = "https://brasil.io/api/dataset/covid19/caso_full/data"
 results = []
 notes = []
-path = os.getcwd() + "//"
+path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 # Getting the data
 while api_get != None:
@@ -75,7 +76,7 @@ notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_
 
 
 # Adding indicators
-indicators = pd.read_excel(path+"IndicadoresSociais_mun.xlsx")
+indicators = pd.read_excel("data\IndicadoresSociais_mun.xlsx")
 # indicators.head(1)
 merged = pd.merge(covid_munic, indicators, how='left', left_on='city_ibge_code', right_on='codigo_ibge',
          copy=True, indicator=False, validate=None)
@@ -107,14 +108,14 @@ notes.append(merged[(merged['nome'].isnull()) & (merged['city'] != 'Importados/I
 # Clean the merged file and put it into a file
 merged.drop(["codigo_ibge", "tipo", "UF", "nome.1", "latitude.1", "longitude.1", "tipo.1", "Região.1", "codigo_uf.1"], axis = 1, inplace = True)
 merged.rename(columns={"nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
-merged.to_csv(path+"caso_full_with_indicators.csv", index=False)
+merged.to_csv("data\caso_full_with_indicators.csv", index=False)
 
 
 # Now let's put the notes into a file
 notes.append("\n\nFinal Columns")
 notes.append(merged.columns)
 
-with open(path+'notes.csv', 'w', newline='') as file:
+with open(data\'notes.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     for row in zip(notes):
         writer.writerow(row)
