@@ -28,7 +28,7 @@ jobs:
       run: |
        python data\Getting_covid_data_from_brasilio.py   
     - name: stage changed files
-      run: git add \data\*.csv
+      run: git add data\*.csv
     - name: commit changed files
       run: git commit -m "Auto updating caso_full_with_indicators and notes"
     - name: fetch from master
