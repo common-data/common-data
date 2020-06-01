@@ -77,7 +77,6 @@ notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_
 
 # Adding indicators
 indicators = pd.read_excel("data\IndicadoresSociais_mun.xlsx")
-# indicators.head(1)
 merged = pd.merge(covid_munic, indicators, how='left', left_on='city_ibge_code', right_on='codigo_ibge',
          copy=True, indicator=False, validate=None)
 
@@ -115,7 +114,7 @@ merged.to_csv("data\caso_full_with_indicators.csv", index=False)
 notes.append("\n\nFinal Columns")
 notes.append(merged.columns)
 
-with open(data\'notes.csv', 'w', newline='') as file:
+with open('data\load_brasilio_notes.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     for row in zip(notes):
         writer.writerow(row)
