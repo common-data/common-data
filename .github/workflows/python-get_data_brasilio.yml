@@ -30,6 +30,7 @@ jobs:
       run: |
         git config user.email "camilacfc@gmail.com"
         git config user.name "camilafracaro"
+        git status
         git add data\*.csv
         git commit -m "Auto updating caso_full_with_indicators and notes"
         git fetch origin master
