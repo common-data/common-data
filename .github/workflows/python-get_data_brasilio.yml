@@ -26,13 +26,11 @@ jobs:
         pip install -r data\requirements.txt
     - name: execute py script
       run: python data\Getting_covid_data_from_brasilio.py
-    - name: stage changed files
+    - name: Commit
       run: |
-        git config --global user.name "camilafracaro"
+        git config user.email "camilacfc@gmail.com"
+        git config user.name "camilafracaro"
         git add data\*.csv
-    - name: commit changed files
-      run: git commit -m "Auto updating caso_full_with_indicators and notes"
-    - name: fetch from master
-      run: git fetch origin master
-    - name: push code to master
-      run: git push origin HEAD:master
+        git commit -m "Auto updating caso_full_with_indicators and notes"
+        git fetch origin master
+        git push origin HEAD:master
