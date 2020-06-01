@@ -1,0 +1,55 @@
+All data from Brasil.IO with same count
+"
+
+Last dates on date and by city"
+"date                  2020-05-31
+last_available_date   2020-05-31
+dtype: datetime64[ns]"
+"
+\Columns added or excluded?"
+No
+"
+
+Totals for confirmed and death"
+"            new_confirmed  new_deaths  estimated_population_2019
+place_type                                                      
+city               511689       29212               1.206776e+10
+state              511690       29212               1.788058e+10"
+"
+
+Number of UF on last 10 days with a case or death"
+"date
+2020-05-22    27
+2020-05-23    24
+2020-05-24    26
+2020-05-25    27
+2020-05-26    27
+2020-05-27    25
+2020-05-28    27
+2020-05-29    26
+2020-05-30    24
+2020-05-31    19
+Name: state, dtype: int64"
+"
+
+City names different from Brasil.io and Indicadores"
+"Empty DataFrame
+Columns: []
+Index: [(1505551.0, 1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, 3145455.0, Olhos-d'Água, Olhos d'Água)]"
+"
+
+Missing any info in Indicadores?"
+"Series([], Name: state, dtype: int64)"
+"
+
+Final Columns"
+"Index(['city', 'city_ibge_code', 'date', 'epidemiological_week',
+       'estimated_population_2019', 'is_last', 'is_repeated',
+       'last_available_confirmed',
+       'last_available_confirmed_per_100k_inhabitants', 'last_available_date',
+       'last_available_death_rate', 'last_available_deaths', 'new_confirmed',
+       'new_deaths', 'order_for_place', 'place_type', 'state', 'name',
+       'latitude', 'longitude', 'Region', 'code_state', 'RAZDEP', 'GINI',
+       'PIND', 'PMPOB', 'PPOB', 'RDPC', 'T_AGUA', 'T_BANAGUA', 'T_DENS',
+       'AGUA_ESGOTO', 'T_RMAXIDOSO', 'IDHM', 'IDHM_E', 'IDHM_L', 'IDHM_R'],
+      dtype='object')"
