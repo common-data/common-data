@@ -14,9 +14,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: ./.github/actions/checkout@v2
+    - uses: actions/checkout@v2
     - name: Set up Python 3.7
-      uses: ./.github/actions/setup-python@v2
+      uses: actions/setup-python@v2
       with:
         python-version: 3.7
     - name: Install dependencies
@@ -24,11 +24,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r data\requirements.txt
     - name: execute py script
-      run: python data\Getting_covid_data_from_brasilio.py
-    - name: Commit files # transfer the new html files back into the repository
       run: |
+        python data\Getting_covid_data_from_brasilio.py
         dir
         dir data
+    - name: Commit files # transfer the new html files back into the repository
+      run: |
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
         git add --all
