@@ -38,5 +38,5 @@ jobs:
     - name: Push changes # push the output folder to your repo
       uses: ./.github/common-data/common-data@master
       with:
-        github_token: ${{ secrets.GITHUB_SHA }}  # SECRET_GITHUB_PUSH
+        github_token: ${{ secrets.GITHUB_TOKEN  }}  # SECRET_GITHUB_PUSH
         force: true
