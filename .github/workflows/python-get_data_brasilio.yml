@@ -7,7 +7,7 @@ on:
   push:
     branches: [ master ]
   schedule:
-    - cron: '0 0 5 ? * * 2020'
+    - cron: '0 5 * * *'
 
 jobs:
   build:
