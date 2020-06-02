@@ -34,7 +34,7 @@ covid_munic["date"] = pd.to_datetime(covid_munic['date'], format="%Y/%m/%d")
 
 # Is our counts right?
 if len(results) == count == len(covid_munic):
-    notes.append("All data from Brasil.IO with same count")
+    notes.append("All data from Brasil.IO with same count: {}".format(count))
 else:
     notes.append("We got some number wrong (Number of cases Brasil.io)")
     notes.append("API: {}".format(len(results)))
@@ -96,10 +96,10 @@ merged.loc[merged["city_ibge_code"] == 4215695,["nome"]] = "Santiago do Sul"
 # Any cities have different names (We are missing states names in Brasil.io, so using from indicators)
 notes.append("\n\nCity names different from Brasil.io and Indicadores")
 notes.append(merged[(merged["city"] != merged["nome"]) & (merged["place_type"] == "city")
-    & (merged["city"] != "Importados/Indefinidos")][["city_ibge_code","codigo_ibge","city",
-    "nome"]].groupby(["city_ibge_code","codigo_ibge","city", "nome"]).count())
+    & (merged["city"] != "Importados/Indefinidos")][["city_ibge_code","city",
+    "nome"]].groupby(["city_ibge_code","city", "nome"]).count())
 #Missing any info from Indicators
-notes.append("\n\nMissing any info in Indicadores?")
+notes.append("\n\nMissing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code")
 notes.append(merged[(merged['nome'].isnull()) & (merged['city'] != 'Importados/Indefinidos')].groupby(["place_type", "city"])["state"].count())
 
 
