@@ -27,8 +27,6 @@ jobs:
     - name: execute py script
       run: python data\Getting_covid_data_from_brasilio.py
     - name: Commit
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git remote set-url origin ${{ secrets.SECRET_GITHUB_PUSH }}
         git status
@@ -36,3 +34,5 @@ jobs:
         git commit -m "Auto updating caso_full_with_indicators and notes"
         git fetch origin master
         git push origin HEAD:master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
