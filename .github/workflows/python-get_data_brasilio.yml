@@ -30,6 +30,8 @@ jobs:
         dir data
     - name: Commit files # transfer the new html files back into the repository
       run: |
+        dir data
+        git status
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
         git add --all
