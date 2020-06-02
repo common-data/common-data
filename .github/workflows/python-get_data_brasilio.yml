@@ -32,7 +32,7 @@ jobs:
           git config --local user.name "camilafracaro"
           git commit -m "Add changes" -a
         - name: Push changes
-          uses: ad-m/github-push-action@master
+          uses: common-data/common-data@master
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
 
