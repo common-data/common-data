@@ -6,12 +6,11 @@ name: Python application
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  schedule:
+    - cron:  '0 0 5 ? * * 2020'
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -26,7 +25,6 @@ jobs:
         pip install -r data\requirements.txt
     - name: execute py script
       run: python data\Getting_covid_data_from_brasilio.py
-
     - name: Commit files # transfer the new html files back into the repository
       run: |
         dir
