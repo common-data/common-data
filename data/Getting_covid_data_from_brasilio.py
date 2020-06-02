@@ -114,7 +114,7 @@ merged.to_csv("data\caso_full_with_indicators.csv", index=False)
 notes.append("\n\nFinal Columns")
 notes.append(merged.columns)
 
-with open('data\load_brasilio_notes.csv', 'w', newline='') as file:
+with open('data\load_brasilio_notes.csv', 'w', newline='\n', encoding='utf-8') as file:
     writer = csv.writer(file)
     for row in zip(notes):
         writer.writerow(row)

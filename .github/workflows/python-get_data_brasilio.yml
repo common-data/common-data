@@ -26,15 +26,17 @@ jobs:
         pip install -r data\requirements.txt
     - name: execute py script
       run: python data\Getting_covid_data_from_brasilio.py
-    - name: Commit files
+
+    - name: Commit files # transfer the new html files back into the repository
       run: |
+        dir
         dir data
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
-        git add *
-        git commit -m "Camilator updating the data (caso_full_with_indicators and notes)" -a
-        git push
-    - name: Push changes
-      uses: ./.github/common-data/common-data@master
+        git add --all
+        git commit -m "Camilator updating data"
+    - name: Push changes # push the output folder to your repo
+      uses: common-data/common-data@master
       with:
         github_token: ${{ secrets.SECRET_GITHUB_PUSH }}
+        force: true
