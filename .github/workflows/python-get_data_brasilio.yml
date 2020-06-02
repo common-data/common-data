@@ -28,10 +28,10 @@ jobs:
       run: python data\Getting_covid_data_from_brasilio.py
     - name: Commit files
       run: |
-        dir
+        dir data
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
-        git add .\data
+        git add *
         git commit -m "Camilator updating the data (caso_full_with_indicators and notes)" -a
         git push
     - name: Push changes
