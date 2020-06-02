@@ -1,4 +1,4 @@
-All data from Brasil.IO with same count
+All data from Brasil.IO with same count: 149829
 "
 
 Last dates on date and by city"
@@ -35,10 +35,10 @@ Name: state, dtype: int64"
 City names different from Brasil.io and Indicadores"
 "Empty DataFrame
 Columns: []
-Index: [(1505551.0, 1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, 3145455.0, Olhos-d'Água, Olhos d'Água)]"
+Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, Olhos-d'Água, Olhos d'Água)]"
 "
 
-Missing any info in Indicadores?"
+Missing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code"
 "Series([], Name: state, dtype: int64)"
 "
 
