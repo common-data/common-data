@@ -32,7 +32,7 @@ jobs:
         git add .
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
-        git commit -m "Camilator updating data" -a | exit 0
+        git commit -m "Camilator updating data" -a
     - name: Push changes
       if: github.ref == 'refs/heads/master'
       uses: ad-m/github-push-action@master
