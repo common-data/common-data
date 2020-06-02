@@ -30,6 +30,7 @@ jobs:
       run: |
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
+        git add *
         git commit -m "Update caso_full_with_indicators and notes" -a
     - name: Push changes
       uses: ./.github/common-data/common-data@master
