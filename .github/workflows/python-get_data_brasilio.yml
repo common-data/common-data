@@ -26,14 +26,13 @@ jobs:
     - name: execute py script
       run: |
         python data\Getting_covid_data_from_brasilio.py
-        dir
-        dir data
     - name: Commit files # transfer the new html files back into the repository
       run: |
         dir data
-        git status
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
+        git fetch
+        git status
         git add --all
         git commit -m "Camilator updating data"
     - name: Push changes # push the output folder to your repo
