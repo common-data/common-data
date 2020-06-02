@@ -27,14 +27,14 @@ jobs:
     - name: execute py script
       run: python data\Getting_covid_data_from_brasilio.py
     - name: Commit files
-        run: |
-          git config --local user.email "camilacfc@gmail.com"
-          git config --local user.name "camilafracaro"
-          git commit -m "Add changes" -a
-        - name: Push changes
-          uses: common-data/common-data@master
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --local user.email "camilacfc@gmail.com"
+        git config --local user.name "camilafracaro"
+        git commit -m "Add changes" -a
+    - name: Push changes
+      uses: common-data/common-data@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
 #    - name: Commit
 #      run: |
