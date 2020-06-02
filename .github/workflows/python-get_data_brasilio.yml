@@ -26,13 +26,23 @@ jobs:
         pip install -r data\requirements.txt
     - name: execute py script
       run: python data\Getting_covid_data_from_brasilio.py
-    - name: Commit
-      run: |
-        git remote set-url origin ${{ secrets.SECRET_GITHUB_PUSH }}
-        git status
-        git add data\*.csv
-        git commit -m "Auto updating caso_full_with_indicators and notes"
-        git fetch origin master
-        git push origin HEAD:master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Commit files
+        run: |
+          git config --local user.email "camilacfc@gmail.com"
+          git config --local user.name "camilafracaro"
+          git commit -m "Add changes" -a
+        - name: Push changes
+          uses: ad-m/github-push-action@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+
+#    - name: Commit
+#      run: |
+#        git remote set-url origin ${{ secrets.SECRET_GITHUB_PUSH }}
+#        git status
+#        git add data\*.csv
+#        git commit -m "Auto updating caso_full_with_indicators and notes"
+#        git fetch origin master
+#        git push origin HEAD:master
+#      with:
+#        github_token: ${{ secrets.GITHUB_TOKEN }}
