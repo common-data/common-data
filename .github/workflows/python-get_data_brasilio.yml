@@ -28,15 +28,27 @@ jobs:
         python data\Getting_covid_data_from_brasilio.py
     - name: Commit files # transfer the new html files back into the repository
       run: |
-        dir data
+        echo ${{ github.ref }}
+        git add .
         git config --local user.email "camilacfc@gmail.com"
         git config --local user.name "camilafracaro"
-        git add data\caso_full_with_indicators.csv
-        git add data\load_brasilio_notes.csv
-        git status
-        git commit -m "Camilator updating data"
-    - name: Push changes # push the output folder to your repo
-      uses: ./.github/common-data/common-data@master
+        git commit -m "Camilator updating data" -a | exit 0
+    - name: Push changes
+      if: github.ref == 'refs/heads/master'
+      uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN  }}  # SECRET_GITHUB_PUSH
-        force: true
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+#    - name: Commit files # transfer the new html files back into the repository
+#      run: |
+#        dir data
+#        git config --local user.email "camilacfc@gmail.com"
+#        git config --local user.name "camilafracaro"
+#        git add data\caso_full_with_indicators.csv
+#        git add data\load_brasilio_notes.csv
+#        git status
+#        git commit -m "Camilator updating data"
+#    - name: Push changes # push the output folder to your repo
+#      uses: ./.github/common-data/common-data@master
+#      with:
+#        github_token: ${{ secrets.GITHUB_TOKEN  }}  # SECRET_GITHUB_PUSH
+#        force: true
