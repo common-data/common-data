@@ -74,7 +74,6 @@ notes.append("\n\nNumber of UF on last 10 days with a case or death")
 notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_deaths"] > 0)].groupby("date")["state"].nunique().tail(10))
 
 
-
 # Adding indicators
 indicators = pd.read_excel("data\IndicadoresSociais_mun.xlsx")
 merged = pd.merge(covid_munic, indicators, how='left', left_on='city_ibge_code', right_on='codigo_ibge',
@@ -103,18 +102,17 @@ notes.append("\n\nMissing any info in Indicadores? We already know that Importad
 notes.append(merged[(merged['nome'].isnull()) & (merged['city'] != 'Importados/Indefinidos')].groupby(["place_type", "city"])["state"].count())
 
 
-
 # Clean the merged file and put it into a file
 merged.drop(["codigo_ibge", "tipo", "UF", "nome.1", "latitude.1", "longitude.1", "tipo.1", "Região.1", "codigo_uf.1"], axis = 1, inplace = True)
 merged.rename(columns={"nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
-merged.to_csv("data\caso_full_with_indicators.csv", index=False)
+merged.to_csv("data\caso_full_with_indicators.csv", index=False, encoding='utf-8-sig')
 
 
 # Now let's put the notes into a file
 notes.append("\n\nFinal Columns")
 notes.append(merged.columns)
 
-with open('data\load_brasilio_notes.csv', 'w', newline='\n', encoding='utf-8') as file:
+with open('data\load_brasilio_notes.csv', 'w', newline='\n', encoding='utf-8-sig') as file:
     writer = csv.writer(file)
     for row in zip(notes):
         writer.writerow(row)
