@@ -1,9 +1,9 @@
-﻿All data from Brasil.IO with same count: 163036
+﻿All data from Brasil.IO with same count: 167516
 "
 
 Last dates on date and by city"
-"date                  2020-06-04
-last_available_date   2020-06-04
+"date                  2020-06-05
+last_available_date   2020-06-05
 dtype: datetime64[ns]"
 "
 \Columns added or excluded?"
@@ -13,13 +13,12 @@ No
 Totals for confirmed and death"
 "            new_confirmed  new_deaths  estimated_population_2019
 place_type                                                      
-city               594051       32918               1.287429e+10
-state              595097       33040               1.872117e+10"
+city               617518       33931               1.307686e+10
+state              617520       33931               1.893132e+10"
 "
 
 Number of UF on last 10 days with a case or death"
 "date
-2020-05-26    27
 2020-05-27    25
 2020-05-28    27
 2020-05-29    27
@@ -27,8 +26,9 @@ Number of UF on last 10 days with a case or death"
 2020-05-31    27
 2020-06-01    26
 2020-06-02    27
-2020-06-03    21
-2020-06-04     5
+2020-06-03    24
+2020-06-04    19
+2020-06-05     2
 Name: state, dtype: int64"
 "
 
