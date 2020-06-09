@@ -1,9 +1,9 @@
-﻿All data from Brasil.IO with same count: 176686
+﻿All data from Brasil.IO with same count: 181305
 "
 
 Last dates on date and by city"
-"date                  2020-06-07
-last_available_date   2020-06-07
+"date                  2020-06-08
+last_available_date   2020-06-08
 dtype: datetime64[ns]"
 "
 \Columns added or excluded?"
@@ -13,29 +13,29 @@ No
 Totals for confirmed and death"
 "            new_confirmed  new_deaths  estimated_population_2019
 place_type                                                      
-city               685116       36328               1.348395e+10
-state              693041       36498               1.935161e+10"
+city               696773       36665               1.368771e+10
+state              708347       37245               1.956176e+10"
 "
 
 Number of UF on last 10 days with a case or death"
 "date
-2020-05-29    27
 2020-05-30    26
 2020-05-31    27
 2020-06-01    26
 2020-06-02    27
 2020-06-03    26
 2020-06-04    24
-2020-06-05    25
-2020-06-06    25
-2020-06-07    25
+2020-06-05    26
+2020-06-06    26
+2020-06-07    26
+2020-06-08    23
 Name: state, dtype: int64"
 "
 
 City names different from Brasil.io and Indicadores"
 "Empty DataFrame
 Columns: []
-Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, Olhos-d'Água, Olhos d'Água)]"
+Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, Olhos-d'Água, Olhos d'Água), (4215687.0, Santa Terezinha do Progresso, Santiago do Sul)]"
 "
 
 Missing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code"
