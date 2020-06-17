@@ -37,7 +37,7 @@ population.rename(columns={"city_ibge_code": "codigo_ibge"}, errors="raise", inp
 indicators["population2019"] = indicators.merge(population, how="left", on="codigo_ibge")["estimated_population"]
 
 # Creating one dataframe for cities and other for all capitals and another for cities > 150000 (~200)
-cities = indicators[indicators["tipo"] == "Municipio"][['codigo_ibge', 'nome', 'latitude', 'longitude', 'UF']]
+cities = indicators[indicators["tipo"] != "Estado"][['codigo_ibge', 'nome', 'latitude', 'longitude', 'UF']]
 capitals = indicators[indicators["tipo"] == "Capital"][['UF', 'nome', 'latitude', 'longitude']]
 capitals.columns = ['uf_capital', 'capital', 'lat_cap', 'long_cap']
 cities150000 = indicators[indicators["population2019"] > 150000][['codigo_ibge', 'nome', 'latitude', 'longitude', 'UF']]
@@ -67,7 +67,7 @@ distance_nearest_capital.columns = ["codigo_ibge", "distance_nearest_capital"]
 
 
 # Merging back to indicators
-indicators = indicators.merge(distance_capital, how='left', on="codigo_ibge")\
+indicators = pd.merge(indicators, distance_capital, how='left', on="codigo_ibge")\
     .merge(distance_nearest_capital, on="codigo_ibge")\
     .merge(distance_nearest_bigcity, on="codigo_ibge")
 
