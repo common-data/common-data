@@ -78,3 +78,8 @@ As colunas finais são:
 - `IDHM_E`: a parte da educação do IDHM 
 - `IDHM_L`: a parte da longevidade do IDHM
 - `IDHM_R`: a parte da renda do IDHM
+
+ ####Distância entre cidades (calculating_distance_between_cities.py):
+- `distance_capital`: distância, em km, entre a cidade e a capital da UF
+- `distance_nearest_capital`: minima distância, em km, entre a cidade e uma capital
+- `distance_nearest_bigcity`: minima distância, em km, entre a cidade e uma cidade de mais de 150 mil habitantes

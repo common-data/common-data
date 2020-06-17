@@ -75,7 +75,7 @@ notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_
 
 
 # Adding indicators
-indicators = pd.read_excel("data\IndicadoresSociais_mun.xlsx")
+indicators = pd.read_csv("data\IndicadoresSociais_mun_distance.csv")
 merged = pd.merge(covid_munic, indicators, how='left', left_on='city_ibge_code', right_on='codigo_ibge',
          copy=True, indicator=False, validate=None)
 
@@ -103,7 +103,7 @@ notes.append(merged[(merged['nome'].isnull()) & (merged['city'] != 'Importados/I
 
 
 # Clean the merged file and put it into a file
-merged.drop(["codigo_ibge", "tipo", "UF", "nome.1", "latitude.1", "longitude.1", "tipo.1", "Região.1", "codigo_uf.1"], axis = 1, inplace = True)
+merged.drop(["codigo_ibge", "tipo", "UF", "population2019"], axis = 1, inplace = True)
 merged.rename(columns={"nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
 merged.to_csv("data\caso_full_with_indicators.csv", index=False, encoding='utf-8-sig')
 

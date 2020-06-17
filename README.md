@@ -1,7 +1,7 @@
-Esse repositório mostra as análises feitas para o coletivo [CommonData](https://www.instagram.com/common.data/).
-Nem todas estão aqui porque rolou um pouco de arte também, mas colocamos aqui sempre que der.
+Esse repositório conta com as análises feitas para o coletivo [CommonData](https://www.instagram.com/common.data/).
+Nem todas as análises estão aqui porque estas tiveram arte também, mas colocamos aqui sempre que der.
 
-Contamos aqui com alguns dados baixados na pasta data. A maioria das nossas análises do Covid-19 são do banco de dados caso_full.csv da [Brasil.io](https://data.brasil.io/dataset/covid19/_meta/list.html). Os dados foram automatizados para pegar as ultimas atualizacoes as 2h da manha. Mais informacao sobre os bancos esta na pasta `data`.
+Contamos aqui com alguns dados baixados na pasta data. A maioria das nossas análises do Covid-19 são do banco de dados caso_full.csv da [Brasil.io](https://data.brasil.io/dataset/covid19/_meta/list.html). Os dados foram automatizados para pegar as ultimas atualizacoes as 5h da manha. Mais informacoes sobre os bancos esta na pasta `data`.
 
 
 Dados baixados mas ainda não utilizados.
