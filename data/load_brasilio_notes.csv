@@ -1,9 +1,9 @@
-﻿All data from Brasil.IO with same count: 218533
+﻿All data from Brasil.IO with same count: 223476
 "
 
 Last dates on date and by city"
-"date                  2020-06-16
-last_available_date   2020-06-16
+"date                  2020-06-17
+last_available_date   2020-06-17
 dtype: datetime64[ns]"
 "
 \Columns added or excluded?"
@@ -13,13 +13,12 @@ No
 Totals for confirmed and death"
 "            new_confirmed  new_deaths  estimated_population_2019
 place_type                                                      
-city               914039       44713               1.532255e+10
-state              928985       45464               2.124294e+10"
+city               948946       45858               1.552860e+10
+state              959734       46625               2.145308e+10"
 "
 
 Number of UF on last 10 days with a case or death"
 "date
-2020-06-07    27
 2020-06-08    26
 2020-06-09    27
 2020-06-10    27
@@ -28,7 +27,8 @@ Number of UF on last 10 days with a case or death"
 2020-06-13    27
 2020-06-14    27
 2020-06-15    27
-2020-06-16    23
+2020-06-16    26
+2020-06-17    23
 Name: state, dtype: int64"
 "
 
@@ -51,5 +51,7 @@ Final Columns"
        'new_deaths', 'order_for_place', 'place_type', 'state', 'name',
        'latitude', 'longitude', 'Region', 'code_state', 'RAZDEP', 'GINI',
        'PIND', 'PMPOB', 'PPOB', 'RDPC', 'T_AGUA', 'T_BANAGUA', 'T_DENS',
-       'AGUA_ESGOTO', 'T_RMAXIDOSO', 'IDHM', 'IDHM_E', 'IDHM_L', 'IDHM_R'],
+       'AGUA_ESGOTO', 'T_RMAXIDOSO', 'IDHM', 'IDHM_E', 'IDHM_L', 'IDHM_R',
+       'distance_capital', 'distance_nearest_capital',
+       'distance_nearest_bigcity'],
       dtype='object')"
