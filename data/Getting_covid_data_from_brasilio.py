@@ -6,34 +6,54 @@
 import requests
 import pandas as pd
 import json
-from datetime import date
+from datetime import date, timedelta, datetime
+import time
 import numpy as np
 import os
 import csv
 import inspect
 
 # Setting the variables
-api_get = "https://brasil.io/api/dataset/covid19/caso_full/data"
-results = []
 notes = []
+results = []
 path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
+date_list = pd.to_datetime(pd.date_range(date.today() - timedelta(1), periods=12, freq='-1D').tolist(), format='%Y%m%d')
+
+# Getting our current data
+covid_munic_exc = pd.read_csv("data\caso_full_with_indicators.csv")
+covid_munic_exc["date"] = pd.to_datetime(covid_munic_exc['date'], format="%Y/%m/%d")
+covid_munic_exc = covid_munic_exc[covid_munic_exc["date"] < min(date_list)]
+
+count = 0
 # Getting the data
-while api_get != None:
-    response = requests.get(api_get)
-    data = response.json()
-    results.extend(data["results"])
-    api_get = data["next"]
-    count = data["count"]
+for date in date_list:
+    cleaning = 1
+    api_get = "https://brasil.io/api/dataset/covid19/caso_full/data/?date="
+    print(datetime.now(), ": ", date)
+    while api_get != None:
+        if cleaning == 1:
+            date_api = date.strftime("%Y-%m-%d")
+        else:
+            date_api = ""
+        response = requests.get(api_get + date_api)
+        data = response.json()
+        results.extend(data["results"])
+        api_get = data["next"]
+        cleaning = 0
+
+    # time.sleep(45)
+    count += data["count"]
 response.close()
 # results[-1]
 
-# Putting info into a Panda Dataframe and doing some checks
-covid_munic = pd.DataFrame(results)
-covid_munic["date"] = pd.to_datetime(covid_munic['date'], format="%Y/%m/%d")
+results = pd.DataFrame(results)
+results["date"] = pd.to_datetime(results['date'], format="%Y/%m/%d")
+# Let's put both datas together now
+covid_munic = pd.concat([covid_munic_exc, results.sort_values(["date", "city_ibge_code"])])
 
 # Is our counts right?
-if len(results) == count == len(covid_munic):
+if len(results) == count:
     notes.append("All data from Brasil.IO with same count: {}".format(count))
 else:
     notes.append("We got some number wrong (Number of cases Brasil.io)")
@@ -59,7 +79,7 @@ for i in columns_before:
         missing_col.append(i)
 for i in columns_now:
     if i not in columns_before:
-        added_col.append()
+        added_col.append(i)
 notes.append("\n\Columns added or excluded?")
 if len(added_col) > 0 | len(missing_col)>0:
     notes.append("Columns missing: {}".format(missing_col))
@@ -76,35 +96,40 @@ notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_
 
 # Adding indicators
 indicators = pd.read_csv("data\IndicadoresSociais_mun_distance.csv")
-merged = pd.merge(covid_munic, indicators, how='left', left_on='city_ibge_code', right_on='codigo_ibge',
+indicators.drop(["tipo", "UF", "population2019"], axis=1, inplace=True)
+indicators.rename(columns={"codigo_ibge": "city_ibge_code", "nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
+
+# Taking out the variables from our main file so we can merge again
+columns_to_drop = set(indicators.columns.values.tolist()) - set(['city_ibge_code'])
+covid_munic.drop(list(columns_to_drop), axis=1, inplace=True)
+
+merged = pd.merge(covid_munic, indicators, how='left', on='city_ibge_code',
          copy=True, indicator=False, validate=None)
 
 # Fix some city names
-merged.loc[merged["city_ibge_code"] == 1708254, ['city']] = "Fortaleza do Tabocão"
+merged.loc[merged["city_ibge_code"] == 1708254,['city']] = "Fortaleza do Tabocão"
 merged.loc[merged["city_ibge_code"] == 2802601,["city"]] = "Gracho Cardoso"
-merged.loc[merged["city_ibge_code"] == 2405306,["nome"]] = "Januário Cicco"
-merged.loc[merged["city_ibge_code"] == 2512606,["nome"]] = "Quixaba"
-merged.loc[merged["city_ibge_code"] == 2613107,["nome"]] = "São Caitano"
-merged.loc[merged["city_ibge_code"] == 2918803,["nome"]] = "Laje"
-merged.loc[merged["city_ibge_code"] == 2918902,["nome"]] = "Lajedão"
-merged.loc[merged["city_ibge_code"] == 2919058,["nome"]] = "Lajedo do Tabocal"
-merged.loc[merged["city_ibge_code"] == 4215695,["nome"]] = "Santiago do Sul"
+merged.loc[merged["city_ibge_code"] == 2405306,["name"]] = "Januário Cicco"
+merged.loc[merged["city_ibge_code"] == 2512606,["name"]] = "Quixaba"
+merged.loc[merged["city_ibge_code"] == 2613107,["name"]] = "São Caitano"
+merged.loc[merged["city_ibge_code"] == 2918803,["name"]] = "Laje"
+merged.loc[merged["city_ibge_code"] == 2918902,["name"]] = "Lajedão"
+merged.loc[merged["city_ibge_code"] == 2919058,["name"]] = "Lajedo do Tabocal"
+merged.loc[merged["city_ibge_code"] == 4215695,["name"]] = "Santa Terezinha do Progresso"
 
 
 # Checks on indicators
 # Any cities have different names (We are missing states names in Brasil.io, so using from indicators)
 notes.append("\n\nCity names different from Brasil.io and Indicadores")
-notes.append(merged[(merged["city"] != merged["nome"]) & (merged["place_type"] == "city")
+notes.append(merged[(merged["city"] != merged["name"]) & (merged["place_type"] == "city")
     & (merged["city"] != "Importados/Indefinidos")][["city_ibge_code","city",
-    "nome"]].groupby(["city_ibge_code","city", "nome"]).count())
+    "name"]].groupby(["city_ibge_code","city", "name"]).count())
 #Missing any info from Indicators
 notes.append("\n\nMissing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code")
-notes.append(merged[(merged['nome'].isnull()) & (merged['city'] != 'Importados/Indefinidos')].groupby(["place_type", "city"])["state"].count())
+notes.append(merged[(merged['name'].isnull()) & (merged['city'] != 'Importados/Indefinidos')].groupby(["place_type", "city"])["state"].count())
 
 
 # Clean the merged file and put it into a file
-merged.drop(["codigo_ibge", "tipo", "UF", "population2019"], axis = 1, inplace = True)
-merged.rename(columns={"nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
 merged.to_csv("data\caso_full_with_indicators.csv", index=False, encoding='utf-8-sig')
 
 
