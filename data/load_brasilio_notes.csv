@@ -1,11 +1,4 @@
-﻿All data from Brasil.IO with same count: 59042
-"
-
-Last dates on date and by city"
-"date                  2020-06-25
-last_available_date   2020-06-25
-dtype: datetime64[ns]"
-"
+﻿"
 \Columns added or excluded?"
 No
 "
@@ -32,10 +25,21 @@ Number of UF on last 10 days with a case or death"
 Name: state, dtype: int64"
 "
 
+Number of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)"
+"
+Confirmed: 375 
+Deaths: 18"
+"
+
+Number of rows where first rows were 0 cases or 0 deaths"
+"
+5499 rows"
+"
+
 City names different from Brasil.io and Indicadores"
 "Empty DataFrame
 Columns: []
-Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, Olhos-d'Água, Olhos d'Água), (4215687.0, Santa Terezinha do Progresso, Santiago do Sul), (4215695.0, Santiago do Sul, Santa Terezinha do Progresso)]"
+Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (4215687.0, Santa Terezinha do Progresso, Santiago do Sul), (4215695.0, Santiago do Sul, Santa Terezinha do Progresso)]"
 "
 
 Missing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code"
@@ -53,5 +57,5 @@ Final Columns"
        'PIND', 'PMPOB', 'PPOB', 'RDPC', 'T_AGUA', 'T_BANAGUA', 'T_DENS',
        'AGUA_ESGOTO', 'T_RMAXIDOSO', 'IDHM', 'IDHM_E', 'IDHM_L', 'IDHM_R',
        'distance_capital', 'distance_nearest_capital',
-       'distance_nearest_bigcity'],
+       'distance_nearest_bigcity', 'health_region'],
       dtype='object')"

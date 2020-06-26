@@ -94,6 +94,59 @@ notes.append("\n\nNumber of UF on last 10 days with a case or death")
 notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_deaths"] > 0)].groupby("date")["state"].nunique().tail(10))
 
 
+# ###### Cleaning caso_full
+covid_munic.sort_values(["city_ibge_code", "state", "date"], inplace=True)
+covid_munic["city_ibge_code"] = covid_munic["city_ibge_code"].fillna(9)
+
+# Cities that had positive on first day and then negative on next update, let's transform both to zero
+clean_df = covid_munic[(covid_munic["new_confirmed"] != 0) | (covid_munic["new_deaths"] != 0)]
+# clean_df[clean_df["city_ibge_code"] == 5221700][["date", "new_confirmed"]].head() # Example to fix: 5221601,5221809
+
+codes = clean_df[["city_ibge_code", "state"]].drop_duplicates()
+count_confirmed = count_deaths = 0
+variables = ["new_confirmed", "new_deaths"]
+for index, row in codes.iterrows():
+    subset = clean_df[(clean_df["city_ibge_code"] == row["city_ibge_code"]
+                       ) & (clean_df["state"] == row["state"])].sort_values("date")
+    for var in variables:
+        if (len(subset) > 1):
+            if (subset[var].iloc[0] == -subset[var].iloc[1]) & (subset[var].iloc[0] != 0):
+                for i in range(2):
+                    covid_munic.loc[(covid_munic["date"] == subset['date'].iloc[i]) &
+                        (covid_munic["city_ibge_code"] == row["city_ibge_code"]) &
+                        (covid_munic["state"] == row["state"]), [var]] = 0
+                if var =="new_confirmed":
+                    count_confirmed += 1
+                elif var == "new_deaths":
+                    count_deaths += 1
+
+# Now Fixing the cumulative sum
+covid_munic["last_available_confirmed"] = covid_munic.groupby(["city_ibge_code", "state"])["new_confirmed"].cumsum()
+covid_munic["last_available_deaths"] = covid_munic.groupby(["city_ibge_code", "state"])["new_deaths"].cumsum()
+
+min_date_no_rep = covid_munic[(covid_munic["new_confirmed"] != 0) | (covid_munic["new_deaths"] != 0
+                )].groupby(["city_ibge_code", "state"])["date"].min().reset_index()
+min_date_no_rep.columns = ["city_ibge_code", "state", "min_date_with_data"]
+
+# Checking the data that it's not the same
+# min_date = covid_munic.groupby(["city_ibge_code", "state"])["date"].min().reset_index()
+# df = pd.merge(min_date, min_date_no_rep, how="left", on=["city_ibge_code", "state"])
+# df.columns = ["city_ibge_code", "state", "min_date", "min_date_with_data"]
+# check = covid_munic[covid_munic["city_ibge_code"].isin(df[df["min_date"] != df["min_date_with_data"]]["city_ibge_code"]) ]
+
+# Excluding cases where there was no case in the beginning
+clean_df = pd.merge(covid_munic, min_date_no_rep, on=["city_ibge_code", "state"])
+covid_munic = clean_df[clean_df["date"] >= clean_df["min_date_with_data"]].drop(["min_date_with_data"], axis=1)
+
+
+# Adding our fixes to our notes
+notes.append("\n\nNumber of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)")
+notes.append("\nConfirmed: {} \nDeaths: {}".format(count_confirmed, count_deaths))
+notes.append("\n\nNumber of rows where first rows were 0 cases or 0 deaths")
+notes.append("\n{} rows".format(len(clean_df) - len(covid_munic)))
+
+
+
 # Adding indicators
 indicators = pd.read_csv("data\IndicadoresSociais_mun_distance.csv")
 indicators.drop(["tipo", "UF", "population2019"], axis=1, inplace=True)
