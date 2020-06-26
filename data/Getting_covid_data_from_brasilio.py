@@ -117,6 +117,9 @@ merged.loc[merged["city_ibge_code"] == 2918902,["name"]] = "Lajedão"
 merged.loc[merged["city_ibge_code"] == 2919058,["name"]] = "Lajedo do Tabocal"
 merged.loc[merged["city_ibge_code"] == 4215695,["name"]] = "Santa Terezinha do Progresso"
 
+# Put health region as "Não há" for states
+merged.loc[merged["place_type"] == "state",["health_region"]] = "Estado"
+merged.loc[merged["city"] == "Importados/Indefinidos",["health_region"]] = "Sem informação"
 
 # Checks on indicators
 # Any cities have different names (We are missing states names in Brasil.io, so using from indicators)
