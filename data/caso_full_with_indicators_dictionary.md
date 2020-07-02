@@ -11,6 +11,8 @@ Ao fim da junção dos dados acima, é criado o arquivo `load_brasilio_notes.csv
 - Se alguma coluna foi adicionada ou excluida do processo atual
 - Números totais de casos Covid-19 confirmados, mortes e população
 - Número de UFs nos ultimos 10 dias de dados (as SES nao atualizam todos os dias)
+- Número de linhas em que corrigimos os primeiros dias de casos (caso tivesse mesmo valor mas negativo na 2a atualização)
+- Número de linhas que excluímos do banco em que nunca havia tido um caso no município
 - Cidades com nomes diferentes entre Brasil.io e indicadores
 - Cidades com informação faltante em indicadores
 - Colunas finais (listadas abaixo)
@@ -83,3 +85,4 @@ As colunas finais são:
 - `distance_capital`: distância, em km, entre a cidade e a capital da UF
 - `distance_nearest_capital`: minima distância, em km, entre a cidade e uma capital
 - `distance_nearest_bigcity`: minima distância, em km, entre a cidade e uma cidade de mais de 150 mil habitantes
+- `health_region`: regiões de saúde previstas na RN nº 259 de 2011
