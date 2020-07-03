@@ -18,7 +18,7 @@ notes = []
 results = []
 path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-date_list = pd.to_datetime(pd.date_range(date.today() - timedelta(1), periods=8, freq='-1D').tolist(), format='%Y%m%d')
+date_list = pd.to_datetime(pd.date_range(date.today() - timedelta(1), periods=7, freq='-1D').tolist(), format='%Y%m%d')
 
 # Getting our current data
 covid_munic_exc = pd.read_csv("data\caso_full_with_indicators.csv")
@@ -38,6 +38,10 @@ for date in date_list:
             date_api = ""
         response = requests.get(api_get + date_api)
         data = response.json()
+        try:
+            data["results"]
+        except:
+            print(date, data)
         results.extend(data["results"])
         api_get = data["next"]
         cleaning = 0
