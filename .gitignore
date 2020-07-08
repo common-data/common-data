@@ -1,15 +1,13 @@
 **/.ipynb_checkpoints
 Dados_InfoGripe_dados*.csv
 
-Global_Mobility_Report.csv
-obitos 2010 por raca datasus - agressoes.txt
-obitos 2010 por raca datasus.txt
-homicidios.csv
-tabela3176-municipio_raca_alfabetizacao.csv
+data/outras/dados-abertos-df.csv
+data/outras/Global_Mobility_Report.csv
+data/raca/*
 analises/Negros no Brasil.ipynb
 data/caso_full_with_indicators_20200622.csv
 data/caso_full_with_indicators_20200702.csv
 20111111mapasregioessaude.pps
-data/observatorio_dos_lixoes.json
-data/observatorio_dos_desastres.json
-data/observatorio_dos_desastres_decretos.json
+data/observatorios/observatorio_dos_lixoes.json
+data/observatorios/observatorio_dos_desastres.json
+data/observatorios/observatorio_dos_desastres_decretos.json

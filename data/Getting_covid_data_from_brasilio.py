@@ -42,6 +42,9 @@ for date in date_list:
             data["results"]
         except:
             print(date, data)
+            time.sleep(90)
+            response = requests.get(api_get + date_api)
+            data = response.json()
         results.extend(data["results"])
         api_get = data["next"]
         cleaning = 0
@@ -152,7 +155,7 @@ notes.append("\n{} rows".format(len(clean_df) - len(covid_munic)))
 
 
 # Adding indicators
-indicators = pd.read_csv("data\IndicadoresSociais_mun_distance.csv")
+indicators = pd.read_csv("data\outras\IndicadoresSociais_mun_distance.csv")
 indicators.drop(["tipo", "UF", "population2019"], axis=1, inplace=True)
 indicators.rename(columns={"codigo_ibge": "city_ibge_code", "nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
 
