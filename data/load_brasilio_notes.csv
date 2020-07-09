@@ -1,9 +1,9 @@
-﻿All data from Brasil.IO with same count: 36935
+﻿All data from Brasil.IO with same count: 37186
 "
 
 Last dates on date and by city"
-"date                  2020-07-06
-last_available_date   2020-07-06
+"date                  2020-07-08
+last_available_date   2020-07-08
 dtype: datetime64[ns]"
 "
 \Columns added or excluded?"
@@ -13,14 +13,12 @@ No
 Totals for confirmed and death"
 "            new_confirmed  new_deaths  estimated_population_2019
 place_type                                                      
-city              1619672       65302               1.936985e+10
-state             1628368       65593               2.542177e+10"
+city              1703191       67628               1.978710e+10
+state             1715503       68046               2.584207e+10"
 "
 
 Number of UF on last 10 days with a case or death"
 "date
-2020-06-27    26
-2020-06-28    27
 2020-06-29    27
 2020-06-30    27
 2020-07-01    27
@@ -28,25 +26,27 @@ Number of UF on last 10 days with a case or death"
 2020-07-03    27
 2020-07-04    27
 2020-07-05    26
-2020-07-06    23
+2020-07-06    27
+2020-07-07    27
+2020-07-08    22
 Name: state, dtype: int64"
 "
 
 Number of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)"
 "
-Confirmed: 6 
+Confirmed: 8 
 Deaths: 0"
 "
 
 Number of rows where first rows were 0 cases or 0 deaths"
 "
-154 rows"
+176 rows"
 "
 
 City names different from Brasil.io and Indicadores"
 "Empty DataFrame
 Columns: []
-Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (3122900.0, Dona Euzébia, Dona Eusébia), (4215687.0, Santa Terezinha do Progresso, Santiago do Sul), (4215695.0, Santiago do Sul, Santa Terezinha do Progresso)]"
+Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (2919009.0, Lajedinho, Lajedão), (3122900.0, Dona Euzébia, Dona Eusébia), (4215687.0, Santa Terezinha do Progresso, Santiago do Sul), (4215695.0, Santiago do Sul, Santa Terezinha do Progresso)]"
 "
 
 Missing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code"
