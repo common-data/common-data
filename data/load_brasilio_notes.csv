@@ -1,9 +1,9 @@
-﻿All data from Brasil.IO with same count: 37740
+﻿All data from Brasil.IO with same count: 37817
 "
 
 Last dates on date and by city"
-"date                  2020-07-16
-last_available_date   2020-07-16
+"date                  2020-07-17
+last_available_date   2020-07-17
 dtype: datetime64[ns]"
 "
 \Columns added or excluded?"
@@ -13,13 +13,12 @@ No
 Totals for confirmed and death"
 "            new_confirmed  new_deaths  estimated_population_2019
 place_type                                                      
-city              1972152       75272               2.145693e+10
-state             2015280       76841               2.752324e+10"
+city              2017091       76863               2.166615e+10
+state             2049992       77964               2.773339e+10"
 "
 
 Number of UF on last 10 days with a case or death"
 "date
-2020-07-07    27
 2020-07-08    27
 2020-07-09    27
 2020-07-10    27
@@ -27,20 +26,21 @@ Number of UF on last 10 days with a case or death"
 2020-07-12    27
 2020-07-13    27
 2020-07-14    26
-2020-07-15    26
-2020-07-16    24
+2020-07-15    27
+2020-07-16    27
+2020-07-17    23
 Name: state, dtype: int64"
 "
 
 Number of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)"
 "
-Confirmed: 3 
+Confirmed: 6 
 Deaths: 0"
 "
 
 Number of rows where first rows were 0 cases or 0 deaths"
 "
-80 rows"
+85 rows"
 "
 
 City names different from Brasil.io and Indicadores"
