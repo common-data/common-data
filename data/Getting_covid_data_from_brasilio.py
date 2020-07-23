@@ -42,14 +42,13 @@ for date in date_list:
             data["results"]
         except:
             print(date, data)
-            time.sleep(90)
+            time.sleep(60)
             response = requests.get(api_get + date_api)
             data = response.json()
         results.extend(data["results"])
         api_get = data["next"]
         cleaning = 0
 
-    time.sleep(45)
     count += data["count"]
 response.close()
 # results[-1]
