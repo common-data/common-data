@@ -3,9 +3,9 @@
 
 name: Python application
 
-on:
-  schedule:
-    - cron: '47 6 * * *'
+#on:
+#  schedule:
+#    - cron: '47 6 * * *'
 
 jobs:
   build:

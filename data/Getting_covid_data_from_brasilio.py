@@ -22,7 +22,7 @@ date_list = pd.to_datetime(pd.date_range(date.today() - timedelta(1), periods=7,
 
 # Getting our current data
 covid_munic_exc = pd.read_csv("data\caso_full_with_indicators.csv")
-covid_munic_exc["date"] = pd.to_datetime(covid_munic_exc['date'], format="%Y/%m/%d")
+covid_munic_exc["date"] = pd.to_datetime(covid_munic_exc["date"], format="%Y/%m/%d")
 covid_munic_exc = covid_munic_exc[covid_munic_exc["date"] < min(date_list)]
 
 count = 0
