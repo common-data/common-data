@@ -22,7 +22,7 @@ date_list = pd.to_datetime(pd.date_range(date.today() - timedelta(1), periods=7,
 
 # Getting our current data
 covid_munic_exc = pd.read_csv("data\caso_full_with_indicators.csv")
-covid_munic_exc["date"] = pd.to_datetime(covid_munic_exc["date"], format="%Y/%m/%d")
+covid_munic_exc["date"] = pd.to_datetime(covid_munic_exc['date'], format="%Y/%m/%d")
 covid_munic_exc = covid_munic_exc[covid_munic_exc["date"] < min(date_list)]
 
 count = 0
@@ -125,10 +125,7 @@ for index, row in codes.iterrows():
                     count_confirmed += 1
                 elif var == "new_deaths":
                     count_deaths += 1
-
-# Now Fixing the cumulative sum
-covid_munic["last_available_confirmed"] = covid_munic.groupby(["city_ibge_code", "state"])["new_confirmed"].cumsum()
-covid_munic["last_available_deaths"] = covid_munic.groupby(["city_ibge_code", "state"])["new_deaths"].cumsum()
+                print(subset[["city_ibge_code", "state", "date", var, "order_for_place"]].iloc[0:2])
 
 min_date_no_rep = covid_munic[(covid_munic["new_confirmed"] != 0) | (covid_munic["new_deaths"] != 0
                 )].groupby(["city_ibge_code", "state"])["date"].min().reset_index()
@@ -143,6 +140,13 @@ min_date_no_rep.columns = ["city_ibge_code", "state", "min_date_with_data"]
 # Excluding cases where there was no case in the beginning
 clean_df = pd.merge(covid_munic, min_date_no_rep, on=["city_ibge_code", "state"])
 covid_munic = clean_df[clean_df["date"] >= clean_df["min_date_with_data"]].drop(["min_date_with_data"], axis=1)
+
+# Now Fixing some data
+covid_munic["last_available_confirmed"] = covid_munic.groupby(["city_ibge_code", "state"])["new_confirmed"].cumsum()
+covid_munic["last_available_deaths"] = covid_munic.groupby(["city_ibge_code", "state"])["new_deaths"].cumsum()
+covid_munic["order_for_place"] = covid_munic.groupby(["city_ibge_code", "state"])["date"].cumcount() + 1
+covid_munic["last_available_death_rate"] = (covid_munic["last_available_confirmed"] / covid_munic["estimated_population_2019"])
+covid_munic["last_available_confirmed_per_100k_inhabitants"] = (covid_munic["last_available_death_rate"] * 100000)
 
 
 # Adding our fixes to our notes
@@ -167,14 +171,18 @@ merged = pd.merge(covid_munic, indicators, how='left', on='city_ibge_code',
 
 # Fix some city names
 merged.loc[merged["city_ibge_code"] == 1708254,['city']] = "Fortaleza do Tabocão"
-merged.loc[merged["city_ibge_code"] == 2802601,["city"]] = "Gracho Cardoso"
 merged.loc[merged["city_ibge_code"] == 2405306,["name"]] = "Januário Cicco"
 merged.loc[merged["city_ibge_code"] == 2512606,["name"]] = "Quixaba"
 merged.loc[merged["city_ibge_code"] == 2613107,["name"]] = "São Caitano"
+merged.loc[merged["city_ibge_code"] == 2802601,["city"]] = "Gracho Cardoso"
+merged.loc[merged["city_ibge_code"] == 2918753,["name"]] = "Lagoa Real"
 merged.loc[merged["city_ibge_code"] == 2918803,["name"]] = "Laje"
 merged.loc[merged["city_ibge_code"] == 2918902,["name"]] = "Lajedão"
+merged.loc[merged["city_ibge_code"] == 2919009,["name"]] = "Lajedinho"
 merged.loc[merged["city_ibge_code"] == 2919058,["name"]] = "Lajedo do Tabocal"
-merged.loc[merged["city_ibge_code"] == 4215695,["name"]] = "Santa Terezinha do Progresso"
+merged.loc[merged["city_ibge_code"] == 3122900,["name"]] = "Dona Euzébia"
+merged.loc[merged["city_ibge_code"] == 4215687,["name"]] = "Santa Terezinha do Progresso"
+merged.loc[merged["city_ibge_code"] == 4215695,["name"]] = "Santiago do Sul"
 
 # Put health region as "Não há" for states
 merged.loc[merged["place_type"] == "state",["health_region"]] = "Estado"
