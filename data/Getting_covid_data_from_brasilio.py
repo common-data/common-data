@@ -145,8 +145,8 @@ covid_munic = clean_df[clean_df["date"] >= clean_df["min_date_with_data"]].drop(
 covid_munic["last_available_confirmed"] = covid_munic.groupby(["city_ibge_code", "state"])["new_confirmed"].cumsum()
 covid_munic["last_available_deaths"] = covid_munic.groupby(["city_ibge_code", "state"])["new_deaths"].cumsum()
 covid_munic["order_for_place"] = covid_munic.groupby(["city_ibge_code", "state"])["date"].cumcount() + 1
-covid_munic["last_available_death_rate"] = (covid_munic["last_available_confirmed"] / covid_munic["estimated_population_2019"])
-covid_munic["last_available_confirmed_per_100k_inhabitants"] = (covid_munic["last_available_death_rate"] * 100000)
+covid_munic["last_available_death_rate"] = (covid_munic["last_available_deaths"] / covid_munic["estimated_population_2019"])
+covid_munic["last_available_confirmed_per_100k_inhabitants"] = (covid_munic["last_available_confirmed"] / covid_munic["estimated_population_2019"] * 100000)
 
 
 # Adding our fixes to our notes
@@ -159,7 +159,7 @@ notes.append("\n{} rows".format(len(clean_df) - len(covid_munic)))
 
 # Adding indicators
 indicators = pd.read_csv("data\outras\IndicadoresSociais_mun_distance.csv")
-indicators.drop(["tipo", "UF", "population2019"], axis=1, inplace=True)
+indicators.drop(["tipo", "UF",'POP_DOU','POP_TCU', 'POP', 'Primeiro_Confirmado','Status_COVID','RANK_g100','Amazonia_Legal', 'Semiarido', 'Nota_1','Atividade_Maior_Valor_Adicionado_Bruto', 'Primeira_Morte','CidadeRegiao_SP','PIB_per_capita_precos_correntes1', 'Indicador_3_Obrigacoes_FinanceirasDisponibilidadeCaixa', 'Valor_adicionado_bruto_AdministracaoDefesaEducacaoSaudePublicasSeguridadeSocial_precos_correntes1000', 'ImpostosLiquidosSubsidiosSobreProdutos_precos_correntes1000','Valor_adicionado_bruto_Servicos_preços_correntes1000_exceto_AdministracaoDefesaEducacaoSaudePublicasSeguridadeSocial','POP_DOU','POP_TCU','ID_g100','Valor_adicionado_bruto_Industria_precos_correntes1000','Valor_adicionado_bruto_total_precos_correntes1000','Valor_adicionado_bruto_Agropecuaria_precos_correntes1000','Classificacao_CAPAG','Total_inadimplencias','PIB2017_precos_correntes1000','Nota_3','Classificacao_CAUC','Nota_2','Indicador_1_Endividamento','CAPACxCAUC','Indicador_2_PoupancaCorrente'], axis=1, inplace=True)
 indicators.rename(columns={"codigo_ibge": "city_ibge_code", "nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
 
 # Taking out the variables from our main file so we can merge again

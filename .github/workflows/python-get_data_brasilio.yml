@@ -1,38 +1,38 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Python application
-
-on:
+## This workflow will install Python dependencies, run tests and lint with a single version of Python
+## For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+#
+#name: Python application
+#
+#on:
 #  schedule:
 #    - cron: '47 6 * * *'
-
-jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.7
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r data\requirements.txt
-    - name: execute py script
-      run: |
-        python data\Getting_covid_data_from_brasilio.py
-    - name: Commit files # transfer the new html files back into the repository
-      run: |
-        echo ${{ github.ref }}
-        git add .
-        git config --local user.email "camilacfc@gmail.com"
-        git config --local user.name "camilafracaro"
-        git commit -m "Camilator updating data" -a
-    - name: Push changes
-      if: github.ref == 'refs/heads/master'
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+#
+#jobs:
+#  build:
+#    runs-on: windows-latest
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Set up Python 3.7
+#      uses: actions/setup-python@v2
+#      with:
+#        python-version: 3.7
+#    - name: Install dependencies
+#      run: |
+#        python -m pip install --upgrade pip
+#        pip install -r data\requirements.txt
+#    - name: execute py script
+#      run: |
+#        python data\Getting_covid_data_from_brasilio.py
+#    - name: Commit files # transfer the new html files back into the repository
+#      run: |
+#        echo ${{ github.ref }}
+#        git add .
+#        git config --local user.email "camilacfc@gmail.com"
+#        git config --local user.name "camilafracaro"
+#        git commit -m "Camilator updating data" -a
+#    - name: Push changes
+#      if: github.ref == 'refs/heads/master'
+#      uses: ad-m/github-push-action@master
+#      with:
+#        github_token: ${{ secrets.GITHUB_TOKEN }}

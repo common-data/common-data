@@ -1,9 +1,9 @@
-﻿All data from Brasil.IO with same count: 165186
+All data from Brasil.IO with same count: 38791
 "
 
 Last dates on date and by city"
-"date                  2020-08-07
-last_available_date   2020-08-07
+"date                  2020-08-08
+last_available_date   2020-08-08
 dtype: datetime64[ns]"
 "
 \Columns added or excluded?"
@@ -13,13 +13,12 @@ No
 Totals for confirmed and death"
 "            new_confirmed  new_deaths  estimated_population_2019
 place_type                                                      
-city              2940261       99033               2.607419e+10
-state             2968212       99729               3.214648e+10"
+city              2962521       99358               2.627081e+10
+state             3014518      100575               3.235663e+10"
 "
 
 Number of UF on last 10 days with a case or death"
 "date
-2020-07-29    27
 2020-07-30    27
 2020-07-31    27
 2020-08-01    27
@@ -28,25 +27,26 @@ Number of UF on last 10 days with a case or death"
 2020-08-04    27
 2020-08-05    27
 2020-08-06    27
-2020-08-07    22
+2020-08-07    26
+2020-08-08    22
 Name: state, dtype: int64"
 "
 
 Number of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)"
 "
-Confirmed: 24 
-Deaths: 1"
+Confirmed: 4 
+Deaths: 0"
 "
 
 Number of rows where first rows were 0 cases or 0 deaths"
 "
-1824 rows"
+57 rows"
 "
 
 City names different from Brasil.io and Indicadores"
 "Empty DataFrame
 Columns: []
-Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (2918753.0, Lagoa Real, Lajedo do Tabocal), (2919009.0, Lajedinho, Lajedão), (3122900.0, Dona Euzébia, Dona Eusébia), (3145455.0, Olhos-d'Água, Olhos d'Água), (4215687.0, Santa Terezinha do Progresso, Santiago do Sul), (4215695.0, Santiago do Sul, Santa Terezinha do Progresso)]"
+Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, Olhos-d'�gua, Olhos d'�gua)]"
 "
 
 Missing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code"
@@ -58,11 +58,11 @@ Final Columns"
        'estimated_population_2019', 'is_last', 'is_repeated',
        'last_available_confirmed',
        'last_available_confirmed_per_100k_inhabitants', 'last_available_date',
-       'last_available_death_rate', 'last_available_deaths', 'new_confirmed',
-       'new_deaths', 'order_for_place', 'place_type', 'state', 'name',
-       'latitude', 'longitude', 'Region', 'code_state', 'RAZDEP', 'GINI',
-       'PIND', 'PMPOB', 'PPOB', 'RDPC', 'T_AGUA', 'T_BANAGUA', 'T_DENS',
-       'AGUA_ESGOTO', 'T_RMAXIDOSO', 'IDHM', 'IDHM_E', 'IDHM_L', 'IDHM_R',
-       'distance_capital', 'distance_nearest_capital',
-       'distance_nearest_bigcity', 'health_region'],
+       'last_available_death_rate', 'last_available_deaths', 'order_for_place',
+       'place_type', 'state', 'new_confirmed', 'new_deaths', 'name',
+       'latitude', 'longitude', 'distance_capital', 'distance_nearest_capital',
+       'distance_nearest_bigcity', 'health_region', 'Region', 'code_state',
+       'RAZDEP', 'GINI', 'PIND', 'PMPOB', 'PPOB', 'RDPC', 'T_AGUA',
+       'T_BANAGUA', 'T_DENS', 'AGUA_ESGOTO', 'T_RMAXIDOSO', 'IDHM', 'IDHM_E',
+       'IDHM_L', 'IDHM_R'],
       dtype='object')"
