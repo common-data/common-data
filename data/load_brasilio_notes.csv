@@ -1,10 +1,10 @@
-All data from Brasil.IO with same count: 38791
+﻿Brasil.IO has 1904896 rows
 "
 
 Last dates on date and by city"
-"date                  2020-08-08
-last_available_date   2020-08-08
-dtype: datetime64[ns]"
+"date                   2021-04-14
+last_available_date    2021-04-14
+dtype: object"
 "
 \Columns added or excluded?"
 No
@@ -13,40 +13,29 @@ No
 Totals for confirmed and death"
 "            new_confirmed  new_deaths  estimated_population_2019
 place_type                                                      
-city              2962521       99358               2.627081e+10
-state             3014518      100575               3.235663e+10"
+city             13435969      352146               7.874807e+10
+state            13684445      362335               8.470737e+10"
 "
 
 Number of UF on last 10 days with a case or death"
 "date
-2020-07-30    27
-2020-07-31    27
-2020-08-01    27
-2020-08-02    27
-2020-08-03    27
-2020-08-04    27
-2020-08-05    27
-2020-08-06    27
-2020-08-07    26
-2020-08-08    22
+2021-04-05    27
+2021-04-06    27
+2021-04-07    27
+2021-04-08    27
+2021-04-09    26
+2021-04-10    27
+2021-04-11    27
+2021-04-12    27
+2021-04-13    27
+2021-04-14    22
 Name: state, dtype: int64"
-"
-
-Number of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)"
-"
-Confirmed: 4 
-Deaths: 0"
-"
-
-Number of rows where first rows were 0 cases or 0 deaths"
-"
-57 rows"
 "
 
 City names different from Brasil.io and Indicadores"
 "Empty DataFrame
 Columns: []
-Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (3145455.0, Olhos-d'�gua, Olhos d'�gua)]"
+Index: [(1505551.0, Pau D'Arco, Pau d'Arco), (2304277.0, Ereré, Ererê), (2401305.0, Campo Grande, Augusto Severo (Campo Grande)), (2613800.0, São Vicente Férrer, São Vicente Ferrer), (2902054.0, Araçás, Araças), (2917334.0, Iuiu, Iuiú), (2922250.0, Muquém do São Francisco, Muquém de São Francisco), (3145455.0, Olhos-d'Água, Olhos d'Água), (3147808.0, Passa Vinte, Passa-Vinte), (3165206.0, São Tomé das Letras, São Thomé das Letras), (3506607.0, Biritiba Mirim, Biritiba-Mirim), (3516101.0, Florínea, Florínia), (3522158.0, Itaoca, Itaóca), (4209607.0, Lauro Müller, Lauro Muller), (4216057.0, São Cristóvão do Sul, São Cristovão do Sul)]"
 "
 
 Missing any info in Indicadores? We already know that Importados/Indefinidos don't have ibge_code"
@@ -55,8 +44,8 @@ Missing any info in Indicadores? We already know that Importados/Indefinidos don
 
 Final Columns"
 "Index(['city', 'city_ibge_code', 'date', 'epidemiological_week',
-       'estimated_population_2019', 'is_last', 'is_repeated',
-       'last_available_confirmed',
+       'estimated_population', 'estimated_population_2019', 'is_last',
+       'is_repeated', 'last_available_confirmed',
        'last_available_confirmed_per_100k_inhabitants', 'last_available_date',
        'last_available_death_rate', 'last_available_deaths', 'order_for_place',
        'place_type', 'state', 'new_confirmed', 'new_deaths', 'name',

@@ -2,7 +2,6 @@
 # This code is to get Covid-19 data from Brasil.io
 # And then merge it with IDH info
 # ######################################################
-
 import requests
 import pandas as pd
 import json
@@ -13,59 +12,56 @@ import os
 import csv
 import inspect
 
+
+def cleaning_beginning(dataset, count_confirmed=0, count_deaths=0, count_cleaning=0):
+    # Cities that had positive on first day and then negative on next update, let's transform both to zero
+    clean_df = covid_munic[(covid_munic["new_confirmed"] != 0) | (covid_munic["new_deaths"] != 0)]
+    # clean_df[clean_df["city_ibge_code"] == 5221700][["date", "new_confirmed"]].head() # Example to fix: 5221601,5221809
+
+    codes = clean_df[["city_ibge_code", "state"]].drop_duplicates()
+    variables = ["new_confirmed", "new_deaths"]
+    for index, row in codes.iterrows():
+        subset = clean_df[(clean_df["city_ibge_code"] == row["city_ibge_code"]
+                           ) & (clean_df["state"] == row["state"])].sort_values("date")
+        for var in variables:
+            if (len(subset) > 1):
+                if (subset[var].iloc[0] == -subset[var].iloc[1]) & (subset[var].iloc[0] != 0):
+                    for i in range(2):
+                        covid_munic.loc[(covid_munic["date"] == subset['date'].iloc[i]) &
+                                        (covid_munic["city_ibge_code"] == row["city_ibge_code"]) &
+                                        (covid_munic["state"] == row["state"]), [var]] = 0
+                    if var == "new_confirmed":
+                        count_confirmed += 1
+                    elif var == "new_deaths":
+                        count_deaths += 1
+                    print(subset[["city_ibge_code", "state", "date", var, "order_for_place"]].iloc[0:2])
+
+    min_date_no_rep = covid_munic[(covid_munic["new_confirmed"] != 0) | (covid_munic["new_deaths"] != 0
+                                                                         )].groupby(["city_ibge_code", "state"])[
+        "date"].min().reset_index()
+    min_date_no_rep.columns = ["city_ibge_code", "state", "min_date_with_data"]
+
+    # Excluding cases where there was no case in the beginning
+    clean_df = pd.merge(covid_munic, min_date_no_rep, on=["city_ibge_code", "state"])
+    final_df = clean_df[clean_df["date"] >= clean_df["min_date_with_data"]].drop(["min_date_with_data"], axis=1)
+    count_cleaning = count_cleaning + len(clean_df) - len(final_df)
+    return count_confirmed, count_deaths, count_cleaning, final_df
+
+
 # Setting the variables
 notes = []
 results = []
 path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-date_list = pd.to_datetime(pd.date_range(date.today() - timedelta(1), periods=7, freq='-1D').tolist(), format='%Y%m%d')
+# Getting full file from Brasil.io
+url = 'https://data.brasil.io/dataset/covid19/caso_full.csv.gz'
+r = requests.get(url, allow_redirects=True)
+open('common_data\data\caso_full.csv.gz', 'wb').write(r.content)
+covid_munic = pd.read_csv('common_data\data\caso_full.csv.gz', compression='gzip', delimiter=",",
+                 quotechar='"', lineterminator="\n").sort_values(["date", "city_ibge_code"])
 
-# Getting our current data
-covid_munic_exc = pd.read_csv("data\caso_full_with_indicators.csv")
-covid_munic_exc["date"] = pd.to_datetime(covid_munic_exc['date'], format="%Y/%m/%d")
-covid_munic_exc = covid_munic_exc[covid_munic_exc["date"] < min(date_list)]
-
-count = 0
-# Getting the data
-for date in date_list:
-    cleaning = 1
-    api_get = "https://brasil.io/api/dataset/covid19/caso_full/data/?date="
-    print(datetime.now(), ": ", date)
-    while api_get != None:
-        if cleaning == 1:
-            date_api = date.strftime("%Y-%m-%d")
-        else:
-            date_api = ""
-        response = requests.get(api_get + date_api)
-        data = response.json()
-        try:
-            data["results"]
-        except:
-            print(date, data)
-            time.sleep(60)
-            response = requests.get(api_get + date_api)
-            data = response.json()
-        results.extend(data["results"])
-        api_get = data["next"]
-        cleaning = 0
-
-    count += data["count"]
-response.close()
-# results[-1]
-
-results = pd.DataFrame(results)
-results["date"] = pd.to_datetime(results['date'], format="%Y/%m/%d")
-# Let's put both datas together now
-covid_munic = pd.concat([covid_munic_exc, results.sort_values(["date", "city_ibge_code"])])
-
-# Is our counts right?
-if len(results) == count:
-    notes.append("All data from Brasil.IO with same count: {}".format(count))
-else:
-    notes.append("We got some number wrong (Number of cases Brasil.io)")
-    notes.append("API: {}".format(len(results)))
-    notes.append("API count: {}".format(count))
-    notes.append("Our database: {}".format(len(covid_munic)))
+# Add number of lines to not
+notes.append("Brasil.IO has {} rows".format(len(covid_munic)))
 
 # Checking the data for Brasil.io
 #Last dates
@@ -101,45 +97,22 @@ notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_
 
 
 # ###### Cleaning caso_full
-covid_munic.sort_values(["city_ibge_code", "state", "date"], inplace=True)
+dataset.sort_values(["city_ibge_code", "state", "date"], inplace=True)
 covid_munic["city_ibge_code"] = covid_munic["city_ibge_code"].fillna(9)
+count_confirmed = count_deaths = count_cleaning = 0
+check_cleaning = 1
+while check_cleaning != count_cleaning:
+    check_cleaning = count_cleaning
+    count_confirmed, count_deaths, count_cleaning, covid_munic = cleaning_beginning(covid_munic, count_confirmed, count_deaths, count_cleaning)
+    print(count_confirmed, count_deaths, count_cleaning)
 
-# Cities that had positive on first day and then negative on next update, let's transform both to zero
-clean_df = covid_munic[(covid_munic["new_confirmed"] != 0) | (covid_munic["new_deaths"] != 0)]
-# clean_df[clean_df["city_ibge_code"] == 5221700][["date", "new_confirmed"]].head() # Example to fix: 5221601,5221809
+# Adding our fixes to our notes
+notes.append("\n\nNumber of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)")
+notes.append("\nConfirmed: {} \nDeaths: {}".format(count_confirmed, count_deaths))
+notes.append("\n\nNumber of rows where first rows were 0 cases or 0 deaths")
+notes.append("\n{} rows".format(count_cleaning))
 
-codes = clean_df[["city_ibge_code", "state"]].drop_duplicates()
-count_confirmed = count_deaths = 0
-variables = ["new_confirmed", "new_deaths"]
-for index, row in codes.iterrows():
-    subset = clean_df[(clean_df["city_ibge_code"] == row["city_ibge_code"]
-                       ) & (clean_df["state"] == row["state"])].sort_values("date")
-    for var in variables:
-        if (len(subset) > 1):
-            if (subset[var].iloc[0] == -subset[var].iloc[1]) & (subset[var].iloc[0] != 0):
-                for i in range(2):
-                    covid_munic.loc[(covid_munic["date"] == subset['date'].iloc[i]) &
-                        (covid_munic["city_ibge_code"] == row["city_ibge_code"]) &
-                        (covid_munic["state"] == row["state"]), [var]] = 0
-                if var =="new_confirmed":
-                    count_confirmed += 1
-                elif var == "new_deaths":
-                    count_deaths += 1
-                print(subset[["city_ibge_code", "state", "date", var, "order_for_place"]].iloc[0:2])
 
-min_date_no_rep = covid_munic[(covid_munic["new_confirmed"] != 0) | (covid_munic["new_deaths"] != 0
-                )].groupby(["city_ibge_code", "state"])["date"].min().reset_index()
-min_date_no_rep.columns = ["city_ibge_code", "state", "min_date_with_data"]
-
-# Checking the data that it's not the same
-# min_date = covid_munic.groupby(["city_ibge_code", "state"])["date"].min().reset_index()
-# df = pd.merge(min_date, min_date_no_rep, how="left", on=["city_ibge_code", "state"])
-# df.columns = ["city_ibge_code", "state", "min_date", "min_date_with_data"]
-# check = covid_munic[covid_munic["city_ibge_code"].isin(df[df["min_date"] != df["min_date_with_data"]]["city_ibge_code"]) ]
-
-# Excluding cases where there was no case in the beginning
-clean_df = pd.merge(covid_munic, min_date_no_rep, on=["city_ibge_code", "state"])
-covid_munic = clean_df[clean_df["date"] >= clean_df["min_date_with_data"]].drop(["min_date_with_data"], axis=1)
 
 # Now Fixing some data
 covid_munic["last_available_confirmed"] = covid_munic.groupby(["city_ibge_code", "state"])["new_confirmed"].cumsum()
@@ -148,23 +121,18 @@ covid_munic["order_for_place"] = covid_munic.groupby(["city_ibge_code", "state"]
 covid_munic["last_available_death_rate"] = (covid_munic["last_available_deaths"] / covid_munic["estimated_population_2019"])
 covid_munic["last_available_confirmed_per_100k_inhabitants"] = (covid_munic["last_available_confirmed"] / covid_munic["estimated_population_2019"] * 100000)
 
-
-# Adding our fixes to our notes
-notes.append("\n\nNumber of cases that we fixed the first updates (when it's 5 cases, but next update is -5 for example)")
-notes.append("\nConfirmed: {} \nDeaths: {}".format(count_confirmed, count_deaths))
-notes.append("\n\nNumber of rows where first rows were 0 cases or 0 deaths")
-notes.append("\n{} rows".format(len(clean_df) - len(covid_munic)))
+covid_munic = covid_munic[(covid_munic["order_for_place"] == 1) | (covid_munic["order_for_place"] % 7 == 0) | covid_munic["is_last"]]
+covid_munic["new_confirmed"] = covid_munic.groupby(["city_ibge_code", "state"])["last_available_confirmed"].diff()
+covid_munic["new_deaths"] = covid_munic.groupby(["city_ibge_code", "state"])["last_available_deaths"].diff()
+covid_munic.loc[covid_munic["order_for_place"] == 1,['new_confirmed']] = covid_munic[covid_munic["order_for_place"] == 1]['last_available_confirmed']
+covid_munic.loc[covid_munic["order_for_place"] == 1,['new_deaths']] = covid_munic[covid_munic["order_for_place"] == 1]['last_available_deaths']
 
 
 
 # Adding indicators
-indicators = pd.read_csv("data\outras\IndicadoresSociais_mun_distance.csv")
+indicators = pd.read_csv("common_data\data\outras\IndicadoresSociais_mun_distance.csv")
 indicators.drop(["tipo", "UF",'POP_DOU','POP_TCU', 'POP', 'Primeiro_Confirmado','Status_COVID','RANK_g100','Amazonia_Legal', 'Semiarido', 'Nota_1','Atividade_Maior_Valor_Adicionado_Bruto', 'Primeira_Morte','CidadeRegiao_SP','PIB_per_capita_precos_correntes1', 'Indicador_3_Obrigacoes_FinanceirasDisponibilidadeCaixa', 'Valor_adicionado_bruto_AdministracaoDefesaEducacaoSaudePublicasSeguridadeSocial_precos_correntes1000', 'ImpostosLiquidosSubsidiosSobreProdutos_precos_correntes1000','Valor_adicionado_bruto_Servicos_preços_correntes1000_exceto_AdministracaoDefesaEducacaoSaudePublicasSeguridadeSocial','POP_DOU','POP_TCU','ID_g100','Valor_adicionado_bruto_Industria_precos_correntes1000','Valor_adicionado_bruto_total_precos_correntes1000','Valor_adicionado_bruto_Agropecuaria_precos_correntes1000','Classificacao_CAPAG','Total_inadimplencias','PIB2017_precos_correntes1000','Nota_3','Classificacao_CAUC','Nota_2','Indicador_1_Endividamento','CAPACxCAUC','Indicador_2_PoupancaCorrente'], axis=1, inplace=True)
 indicators.rename(columns={"codigo_ibge": "city_ibge_code", "nome": "name", "Região":"Region", "codigo_uf": "code_state"}, inplace=True)
-
-# Taking out the variables from our main file so we can merge again
-columns_to_drop = set(indicators.columns.values.tolist()) - set(['city_ibge_code'])
-covid_munic.drop(list(columns_to_drop), axis=1, inplace=True)
 
 merged = pd.merge(covid_munic, indicators, how='left', on='city_ibge_code',
          copy=True, indicator=False, validate=None)
@@ -200,14 +168,14 @@ notes.append(merged[(merged['name'].isnull()) & (merged['city'] != 'Importados/I
 
 
 # Clean the merged file and put it into a file
-merged.to_csv("data\caso_full_with_indicators.csv", index=False, encoding='utf-8-sig')
+merged.to_csv("common_data\data\caso_full_with_indicators.csv.zip", compression="zip", index=False, encoding='utf-8-sig')
 
 
 # Now let's put the notes into a file
 notes.append("\n\nFinal Columns")
 notes.append(merged.columns)
 
-with open('data\load_brasilio_notes.csv', 'w', newline='\n', encoding='utf-8-sig') as file:
+with open('common_data\data\load_brasilio_notes.csv', 'w', newline='\n', encoding='utf-8-sig') as file:
     writer = csv.writer(file)
     for row in zip(notes):
         writer.writerow(row)
