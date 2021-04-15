@@ -97,7 +97,7 @@ notes.append(covid_munic[(covid_munic["new_confirmed"] > 0) | (covid_munic["new_
 
 
 # ###### Cleaning caso_full
-dataset.sort_values(["city_ibge_code", "state", "date"], inplace=True)
+covid_munic.sort_values(["city_ibge_code", "state", "date"], inplace=True)
 covid_munic["city_ibge_code"] = covid_munic["city_ibge_code"].fillna(9)
 count_confirmed = count_deaths = count_cleaning = 0
 check_cleaning = 1
@@ -168,7 +168,9 @@ notes.append(merged[(merged['name'].isnull()) & (merged['city'] != 'Importados/I
 
 
 # Clean the merged file and put it into a file
-merged.to_csv("common_data\data\caso_full_with_indicators.csv.zip", compression="zip", index=False, encoding='utf-8-sig')
+filename = "caso_full_with_indicators"
+compression_options = dict(method='zip', archive_name=f'{filename}.csv')
+merged.to_csv(f"common_data\data\{filename}.zip", compression = compression_options, index=False, encoding='utf-8-sig')
 
 
 # Now let's put the notes into a file
